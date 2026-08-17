@@ -1,5 +1,6 @@
 const assert = require('assert')
-const { loadConfig } = require('../../lib/config/config-file')
+const path = require('path')
+const { applyExtends, loadConfig } = require('../../lib/config/config-file')
 
 // `require(esm)` is only available from Node 22.12 onwards.
 const supportsRequireEsm = (() => {
@@ -37,5 +38,22 @@ describe('Config file', () => {
     const loadedConfig = loadConfig('./test/helpers/esm-config/solhint.config.js')
 
     assert.deepStrictEqual(loadedConfig, { extends: ['solhint:recommended'] })
+  })
+
+  it('should extend a CommonJS shareable config', () => {
+    const shareable = path.resolve('./test/helpers/cjs-shareable-config/index.js')
+    const extended = applyExtends({ extends: [shareable] })
+
+    assert.deepStrictEqual(extended.rules, { 'no-console': 'error' })
+  })
+
+  it('should extend an ESM shareable config', function () {
+    if (!supportsRequireEsm) this.skip()
+
+    const shareable = path.resolve('./test/helpers/esm-shareable-config/index.js')
+    const extended = applyExtends({ extends: [shareable] })
+
+    assert.deepStrictEqual(extended.rules, { 'no-console': 'error' })
+    assert.ok(!('__esModule' in extended) && !('default' in extended))
   })
 })
