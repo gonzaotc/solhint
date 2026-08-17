@@ -25,6 +25,12 @@ describe('Config file', () => {
     assert.deepStrictEqual(loadedConfig, loadedConfigFileExpected)
   })
 
+  it('should load a CommonJS config file', () => {
+    const loadedConfig = loadConfig('./test/helpers/cjs-config/solhint.config.js')
+
+    assert.deepStrictEqual(loadedConfig, { extends: ['solhint:recommended'] })
+  })
+
   it('should unwrap the default export of an ESM config file', function () {
     if (!supportsRequireEsm) this.skip()
 
