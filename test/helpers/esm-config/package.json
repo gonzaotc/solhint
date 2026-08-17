@@ -1,0 +1,5 @@
+{
+  "name": "solhint-esm-config-fixture",
+  "private": true,
+  "type": "module"
+}
