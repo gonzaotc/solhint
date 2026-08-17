@@ -1,0 +1,5 @@
+{
+  "name": "solhint-cjs-shareable-config-fixture",
+  "private": true,
+  "type": "commonjs"
+}
